@@ -1,70 +1,289 @@
-# Getting Started with Create React App
+# ReactJs
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Components
 
-## Available Scripts
+terdapat 2 jenis untuk membuat components pada reactJS. Pertama memakai Stateless Compoents, dan kedua memakai Statefull Compoents
 
-In the project directory, you can run:
+#### Stateless Components
 
-### `npm start`
+```
+function HelloComponents() {
+  return <p>Function Compoents</p>;
+}
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+const HelloComponent = () => {
+  // ES6
+  return <p>Gello Function Compoents</p>;
+};
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Statefull Components
 
-### `npm test`
+```
+class StatefullCompoents extends React.Component {
+  render() {
+    // memanggil paling pertama
+    return <p>Statefull Compoents</p>;
+  }
+}
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Props
 
-### `npm run build`
+Props berfungsi membuat components menjadi bisa diubah-ubah / menjadi dinamis.
+DefaultProps berfungsi untuk membuat default value pada props. Jika tidak ada maka props kosong
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Components
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+const YoutubeComp = (props) => {
+  return (
+    <div className="youtube-wrapper">
+      <div className="img-thumb">
+        <img
+          src={props.img}
+          alt="youtube"
+        />
+        <p className="time">{props.time}</p>
+      </div>
+      <p className="title">{props.title}</p>
+      <p className="desc">desc here</p>
+    </div>
+  );
+};
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+YoutubeComp.defaultProps = {
+  time: "7.12",
+  title: "Youtube",
+};
+```
 
-### `npm run eject`
+#### Render
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+<YoutubeComp title="lagi" time="7.12" />
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## State
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+State berfungsi untuk ketika berubah maka akan merender ulang diganti dengan state yang telah berubah
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+state = {
+  order: 4,
+  name: "vino",
+};
 
-## Learn More
+<div className="count">{this.state.order}</div>
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### perbedaan components
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Pada arrow components bersifat global artinya state bisa terbaca dimana saja, sementara pada components standart bersifat non-global atau hanya membaca pada bagian dalam komponents tersebut
 
-### Code Splitting
+```
+handlePlus = () => { // bisa langsung ke global
+  this.setState({
+    order: this.state.order + 1,
+  });
+};
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+handleMinus() { // hanya fokus ke method
+  this.setState({
+    order: this.state.order - 1,
+  });
+}
+```
 
-### Analyzing the Bundle Size
+#### Pemanggilan Props
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+// Parent
+<Components
+  valueOrder={this.state.order}
+/>
 
-### Making a Progressive Web App
+// Components
+this.props.valueOrder;
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## LifeCycle Compoents
 
-### Advanced Configuration
+![App Screenshot](https://miro.medium.com/proxy/0*2Y__6_3e2eiN8h6A)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Mounting 👉 ketika komponent di pasang
+- updating 👉 Ketika komponent di update
+- unmounting 👉 ketika komponent di hapus
 
-### Deployment
+#### Component Basic
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Pertama memanggil `render()` adalah method basic, termasuk dalam **LifeCycle**
 
-### `npm run build` fails to minify
+```
+export default class LifeCycleComp extends Component {
+  render() {
+    return <div>LifeCycleComp</div>;
+  }
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+// Mounting
+constructor(props) {}
+static getDerivedFromProps(props, state) {}
+componentDidMount() {}
+
+// updating
+shouldComponentUpdate(nextProps, nextState) {}
+getSnapshotBeforeUpdate(prevProps, prevState){}
+componentDidUpdate(prevProps, prevState, snapshot) {}
+
+// unmounting
+componentWillUnmount(){}
+
+render(){}
+```
+
+tidak semua component biasa digunakan, biasanya hanya menggunakan :
+![App Screenshot](https://www.tomnysontech.com/content/images/2022/01/image-9.png)
+selain diatas digunakan untuk memaksimalkan components yang ada. contoh kasus :
+
+- `shouldComponentUpdate` 👉 jika click button maka baru terupdate. bisa menghentikan jika memiliki function.
+
+#### Mounting / pemasangan
+
+▶️ constructor ➡️ getDerivedFromProps ➡️ render ➡️ componentDidMount 🚫
+
+- `constructor` 👉 default dari ES6.
+- `getDerivedFromProps` 👉 Menagkap value props.
+- `render` 👉 merender props yang ada.
+- `componentDidMount` 👉 menandakan Compoents selesai di Mounting. || bisa melakukan perintah untuk update.
+
+```
+  constructor(props) {
+    super(props); // super harus ditambahkan jika "extends Component"
+    this.state = {
+      count: 1,
+    };
+  }
+
+  static getDerivedFromProps(props, state) {
+    return null;
+  }
+
+  componentDidMount() {}
+
+  render() {
+    return <button>LifeCycle {this.state.count}</button>;
+  }
+```
+
+#### Updating / diupdate
+
+▶️ constructor (1) ➡️ getDerivedFromProps ➡️ render<1 /> ➡️ componentDidMount
+➡️ getDerivedFromProps ➡️ shouldComponentUpdate ➡️ render <2 />
+➡️ getSnapshotBeforeUpdate ➡️ componentDidUpdate 🚫
+
+- `getDerivedFromProps` 👉 Menagkap apakah ada perubahan di value props.
+- `shouldComponentUpdate` 👉 component yang sangat berguna untuk meningkatkan performa dari sebuah web dimana bisa menjegah update dari sebuah komponents. jika tidak ada retun true maka komponents berhenti.
+- `render` 👉 merender props yang ada.
+- `getSnapshotBeforeUpdate` 👉 Mengchapture nilai prop sebelumnya dengan nilai props sebelumnya.
+- `componentDidUpdate` 👉 Menandakan Compoents telah selesai diupdate.
+
+```
+  constructor(props) {
+    super(props); // super harus ditambahkan jika "extends Component"
+    this.state = {
+      count: 1,
+    };
+  }
+
+  static getDerivedFromProps(props, state) {
+    return null;
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        count: 2,
+      });
+    }, 3000);
+  }
+
+  // updating
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {}
+
+  render() {
+    return <button>LifeCycle {this.state.count}</button>;
+  }
+```
+
+#### Unmounting / dihapus
+
+`componentWillUnmount` Menandakan component di hapus
+
+▶️ constructor (1) ➡️ getDerivedFromProps ➡️ render<button /> ➡️ timeout 15sec ➡️ componentWillUnmount 🚫
+
+- page home
+
+```
+  state = {
+    showComp: true,
+  };
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        showComp: false,
+      });
+    }, 15000);
+  }
+
+render () {
+  return {this.state.showComp ? <LifeCycleComp /> : null}
+}
+```
+
+- page button
+
+```
+ constructor(props) {
+    super(props); // super harus ditambahkan jika "extends Component"
+    this.state = {
+      count: 1,
+    };
+  }
+
+  static getDerivedFromProps(props, state) {
+    return null;
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        count: 2,
+      });
+    }, 3000);
+  }
+
+  // updating
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+  }
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {}
+
+  render() {
+    return <button>LifeCycle {this.state.count}</button>;
+  }
+```
