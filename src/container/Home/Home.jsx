@@ -32,7 +32,7 @@ export default class Home extends Component {
         <br />
         <p>Product Components</p>
         <hr />
-        {/* <Product /> */}
+        <Product />
         <br />
         <br />
         <br />
